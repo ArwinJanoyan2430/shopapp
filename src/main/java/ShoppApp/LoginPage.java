@@ -141,7 +141,7 @@ public class LoginPage extends JFrame implements ActionListener {
         lblMember.setFont(new Font("Roboto", Font.PLAIN, 14));
         lblMember.setBounds(90, 810, 200, 30);
         con.add(lblMember);
-
+        
         btnLogin.addActionListener(this);
         txtUserName.addActionListener(this);
         txtPassword.addActionListener(this);

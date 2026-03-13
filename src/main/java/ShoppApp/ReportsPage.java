@@ -16,9 +16,8 @@ import javax.swing.JTextField;
 
 public class ReportsPage extends JFrame {
 
-    JLabel lblTitle, lblSales, lblTotal;
+    JLabel lblTitle, lblSales, lblTotal, lblNote;
     JTextField txtTotal;
-    JPanel reportBox;
     JTable tblReports;
     DefaultTableModel model;
     Container con;
@@ -77,7 +76,11 @@ public class ReportsPage extends JFrame {
         String totalText = String.format("₱ %.2f", DataStore.getTotalAmount()); // get total
         txtTotal.setText(totalText);
         
-
+        lblNote = new JLabel("Note: The (X) button is disabled. please use the menu to exit.");
+        lblNote.setFont(new Font("Roboto", Font.BOLD, 12));
+        lblNote.setForeground(Color.DARK_GRAY);
+        lblNote.setBounds(10, 820, 400, 12);
+        add(lblNote);
     }
     
     

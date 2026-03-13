@@ -29,7 +29,7 @@ public class CustomerShoppingPage extends JFrame implements ActionListener {
     JList<String> cartList = new JList<>(cartModel);
     JTextField searchField = new JTextField(10);
     JTextField totalField = new JTextField(10);
-    JLabel lblTitle, lblSearch, lbltotal;
+    JLabel lblTitle, lblSearch, lbltotal, lblNote;
     JButton btnAdd, btnCheckout, btnRemove, btnClear, btnRefresh, btnExit, btnLogout;
     DefaultTableModel model;
     
@@ -153,7 +153,13 @@ public class CustomerShoppingPage extends JFrame implements ActionListener {
         btnLogout.setFont(new Font("Roboto", Font.BOLD, 18));
         btnLogout.setBounds(1550, 740, 180, 50);
         add(btnLogout);
-
+        
+        lblNote = new JLabel("Note: The (X) button is disabled. please use the button to exit.");
+        lblNote.setFont(new Font("Roboto", Font.BOLD, 12));
+        lblNote.setForeground(Color.DARK_GRAY);
+        lblNote.setBounds(10, 840, 400, 12);
+        add(lblNote);
+        
         btnRefresh.addActionListener(this);
         btnClear.addActionListener(this);
         btnCheckout.addActionListener(this);
@@ -225,13 +231,31 @@ public class CustomerShoppingPage extends JFrame implements ActionListener {
                     "Confirm data",
                     JOptionPane.INFORMATION_MESSAGE
                 );
-                JOptionPane.showMessageDialog(this, "Checkout successful!");
+                
+                //to show item checked out in the reports page
+                model = DataStore.transactionModel;
+                for (int i = 0; i < cartModel.getSize(); i++) {
+                   String item = cartModel.getElementAt(i); //
+                   String product = item.split("-")[0]; //since the product showwn in the product table is "(product name) - (price)"
+                   
+                   String priceString = item.replaceAll("[^0-9]", ""); //replace anything that is not a number, so price ang makuha
+                   int price = Integer.parseInt(priceString); //string to int
+                   
+                   int qty = 1;
+                   
+                   int transactionId = model.getRowCount() + 1;
+                   
+                   model.addRow(new Object[] {transactionId, product, qty, price});
+                   JOptionPane.showMessageDialog(this, "Checkout successful!");
+                   
+                   totalAmount = 0;
+                   cartModel.clear();
+                   totalField.setText("₱ 0");
+                }
             }
-            model = DataStore.transactionModel;
             
-            totalAmount = 0;
-            cartModel.clear();
-            totalField.setText("₱ 0");
+            
+            
         }
 
         if (e.getSource() == btnRefresh) {

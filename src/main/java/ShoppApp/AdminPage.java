@@ -17,7 +17,7 @@ public class AdminPage extends JFrame implements ActionListener {
     Container con;
 
     //labels
-    JLabel lblTitle, lblLogo;
+    JLabel lblTitle, lblLogo, lblNote;
 
     //buttons
     JButton btnViewProducts, btnViewUsers, btnViewReports;
@@ -84,6 +84,12 @@ public class AdminPage extends JFrame implements ActionListener {
         btnViewReports.setBackground(Color.BLACK);
         btnViewReports.setForeground(Color.WHITE);
         con.add(btnViewReports);
+        
+        lblNote = new JLabel("Note: The (X) button is disabled. please use the menu to exit.");
+        lblNote.setFont(new Font("Roboto", Font.BOLD, 12));
+        lblNote.setForeground(Color.DARK_GRAY);
+        lblNote.setBounds(10, 820, 400, 12);
+        add(lblNote);
 
         btnViewProducts.addActionListener(this);
         btnViewUsers.addActionListener(this);

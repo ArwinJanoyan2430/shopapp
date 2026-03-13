@@ -24,7 +24,7 @@ public class ProductsPage extends JFrame implements ActionListener {
     Container con;
     NavMenu nav;
 
-    JLabel lblTitle, lblAdmin;
+    JLabel lblTitle, lblAdmin, lblNote;
     JTextField txtSearch;
     JButton btnAdd, btnEdit, btnDelete, btnClear;
     JTable table;
@@ -129,6 +129,12 @@ public class ProductsPage extends JFrame implements ActionListener {
 
             sorter.setRowFilter(RowFilter.regexFilter("(?i)" + text));
         });
+        
+        lblNote = new JLabel("Note: The (X) button is disabled. please use the menu to exit.");
+        lblNote.setFont(new Font("Roboto", Font.BOLD, 12));
+        lblNote.setForeground(Color.DARK_GRAY);
+        lblNote.setBounds(10, 820, 400, 12);
+        add(lblNote);
 
         btnAdd.addActionListener(this);
         btnEdit.addActionListener(this);
