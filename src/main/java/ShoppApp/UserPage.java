@@ -178,48 +178,39 @@ public class UserPage extends JFrame implements ActionListener {
         }
         
         if (e.getSource() == btnEdit) {
-            int selectedRow = table.getSelectedRow();
-            if (selectedRow == -1) {
-                return;
-            }
 
-            String productName = JOptionPane.showInputDialog(
-                null,
-                "Enter Product Name:",
-                "Product Name",
-                JOptionPane.PLAIN_MESSAGE
-            );
+        int selectedRow = table.getSelectedRow();
 
-            if (productName == null || productName.trim().isEmpty()) {
-                return;
-            }
+        if (selectedRow == -1) {
+            JOptionPane.showMessageDialog(this, "Please select a user to edit.");
+            return;
+        }
 
-            String price = JOptionPane.showInputDialog(
-                null,
-                "Enter Price:",
-                "Price",
-                JOptionPane.PLAIN_MESSAGE
-            );
+        int modelRow = table.convertRowIndexToModel(selectedRow);
 
-            if (price == null || price.trim().isEmpty()) {
-                return;
-            }
+        String newUsername = JOptionPane.showInputDialog(
+            this,
+            "Enter new Username:"
+        );
 
-            String stock = JOptionPane.showInputDialog(
-                null,
-                "Enter Stock:",
-                "Stock",
-                JOptionPane.PLAIN_MESSAGE
-            );
+        if (newUsername == null || newUsername.trim().isEmpty()) {
+            return;
+        }
 
-            if (stock == null || stock.trim().isEmpty()) {
-                return;
-            }
+        String newPassword = JOptionPane.showInputDialog(
+            this,
+            "Enter new Password:"
+        );
 
-            model.setValueAt(productName, selectedRow, 1);
-            model.setValueAt(price, selectedRow, 2);
-            model.setValueAt(stock, selectedRow, 3);
-        } else if (e.getSource() == btnDelete) {
+        if (newPassword == null || newPassword.trim().isEmpty()) {
+            return;
+        }
+
+        model.setValueAt(newUsername, modelRow, 1);
+        model.setValueAt(newPassword, modelRow, 2);
+
+        JOptionPane.showMessageDialog(this, "User updated successfully.");
+    } else if (e.getSource() == btnDelete) {
             int selectedRow = table.getSelectedRow();
             if (selectedRow == -1) {
                 return;

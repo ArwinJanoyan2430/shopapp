@@ -27,11 +27,11 @@ public class CustomerShoppingPage extends JFrame implements ActionListener {
     DefaultListModel<String> cartModel = new DefaultListModel<>();
     JList<String> productList = new JList<>(productModel);
     JList<String> cartList = new JList<>(cartModel);
-    JTextField searchField = new JTextField(10);
     JTextField totalField = new JTextField(10);
-    JLabel lblTitle, lblSearch, lbltotal, lblNote;
+    JLabel lblTitle, lblProducts, lbltotal, lblNote, cartLabel;
     JButton btnAdd, btnCheckout, btnRemove, btnClear, btnExit, btnLogout;
     DefaultTableModel model;
+    JScrollPane cartPane, productPane;
     
     int totalAmount = 0;
     DataStore ds = new DataStore();
@@ -74,13 +74,10 @@ public class CustomerShoppingPage extends JFrame implements ActionListener {
         add(lblTitle);
 
         // MGA BUTTONS SA LEFT NGA NAAY DESIGN UG FONTS PAKAK
-        lblSearch = new JLabel("Search Product");
-        lblSearch.setFont(new Font("Arial", Font.BOLD, 18));
-        lblSearch.setBounds(100, 180, 150, 40);
-        add(lblSearch);
-
-        searchField.setBounds(260, 180, 300, 40);
-        add(searchField);
+        lblProducts = new JLabel("Products");
+        lblProducts.setFont(new Font("Arial", Font.BOLD, 18));
+        lblProducts.setBounds(100, 180, 150, 40);
+        add(lblProducts);
 
         btnAdd = new JButton("Add to Cart");
         btnAdd.setBackground(new Color(33, 33, 33));
@@ -89,13 +86,13 @@ public class CustomerShoppingPage extends JFrame implements ActionListener {
         btnAdd.setBounds(580, 180, 180, 40);
         add(btnAdd);
 
-        JScrollPane productPane = new JScrollPane(productList);
+        productPane = new JScrollPane(productList);
         productList.setFont(new Font("Arial", Font.PLAIN, 18));
         productPane.setBounds(100, 240, 660, 550);
         add(productPane);
 
         // MGA BUTTONS SA RIGHT NGA NAAY DESIGN UG FONTS HAHAHAHAHA LAMI KAAYO
-        JLabel cartLabel = new JLabel("My Cart");
+        cartLabel = new JLabel("My Cart");
         cartLabel.setFont(new Font("Arial", Font.BOLD, 18));
         cartLabel.setBounds(850, 180, 100, 40);
         add(cartLabel);
@@ -112,7 +109,7 @@ public class CustomerShoppingPage extends JFrame implements ActionListener {
         btnClear.setBounds(1350, 180, 160, 40);
         add(btnClear);
 
-        JScrollPane cartPane = new JScrollPane(cartList);
+        cartPane = new JScrollPane(cartList);
         cartList.setFont(new Font("Roboto", Font.PLAIN, 18));
         cartPane.setBounds(850, 240, 660, 550);
         add(cartPane);
@@ -174,16 +171,54 @@ public class CustomerShoppingPage extends JFrame implements ActionListener {
             productModel.addElement(name + " - ₱" + price);
         }
     }
-
+    
+    
+    
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == btnAdd) {
             String selected = productList.getSelectedValue();
             if (selected != null) {
-                cartModel.addElement(selected);
-                updateTotal(selected, true);
+
+                // Ask for quantity
+                String qtyStr = JOptionPane.showInputDialog(
+                    this,
+                    "Enter quantity for this product:",
+                    "Quantity",
+                    JOptionPane.PLAIN_MESSAGE
+                );
+
+                if (qtyStr == null || qtyStr.trim().isEmpty()) {
+                    return; // user canceled
+                }
+
+                int qty = 0;
+
+                try {
+                    qty = Integer.parseInt(qtyStr);
+                    if (qty <= 0) {
+                        JOptionPane.showMessageDialog(this, "Quantity must be at least 1.");
+                        return;
+                    }
+                } catch (NumberFormatException ex) {
+                    JOptionPane.showMessageDialog(this, "Invalid quantity entered.");
+                    return;
+                }
+
+                // para "product - price" to {"product","price"}
+                String[] parts = selected.split(" - ₱");
+                String productName = parts[0];
+                String priceStr = parts[1];
+
+                // Add product with quantity to cart
+                String cartItem = productName + " - " + priceStr + " - " + qty;
+                cartModel.addElement(cartItem);
+                updateTotal(cartItem, true);
+
+                JOptionPane.showMessageDialog(this, qty + " item(s) added to the cart.");
             }
         }
+
 
         if (e.getSource() == btnClear) {
             cartModel.clear();
@@ -222,22 +257,22 @@ public class CustomerShoppingPage extends JFrame implements ActionListener {
                 
                 //to show item checked out in the reports page
                 model = DataStore.transactionModel;
+                // Checkout loop
                 for (int i = 0; i < cartModel.getSize(); i++) {
-                   String item = cartModel.getElementAt(i); //
-                   String product = item.split("-")[0]; //since the product showwn in the product table is "(product name) - (price)"
-                   
-                   String priceString = item.replaceAll("[^0-9]", ""); //replace anything that is not a number, so price ang makuha
-                   int price = Integer.parseInt(priceString); //string to int
-                   
-                   int qty = 1;
-                   
-                   int transactionId = model.getRowCount() + 1;
-                   
-                   model.addRow(new Object[] {transactionId, product, qty, price});
-                   JOptionPane.showMessageDialog(this, "Checkout successful!");
-                   
-                   
+                    String item = cartModel.getElementAt(i);
+
+                    // Split "ProductName - Price - Qty"
+                    String[] parts = item.split(" - "); // mahimo syang {"product", "price", "qty"}
+                    String product = parts[0].trim(); //to get the product and trim to remove the spaces
+                    int price = Integer.parseInt(parts[1].trim()); //get the price
+                    int qty = Integer.parseInt(parts[2].trim()); // quantity
+
+                    int transactionId = model.getRowCount() + 1; // add row to the table
+
+                    model.addRow(new Object[] { transactionId, product, qty, price }); //send to the table
                 }
+                JOptionPane.showMessageDialog(this, "Checkout successful!");
+                
                 totalAmount = 0;
                 cartModel.clear();
                 totalField.setText("₱ 0");
@@ -267,24 +302,30 @@ public class CustomerShoppingPage extends JFrame implements ActionListener {
             this.dispose();
         }
     }
-    
+
     private void updateTotal(String item, boolean adding) {
 
-        // Simple logic to extract numbers from the string
-        String priceStr = item.replaceAll("[^0-9]", "");
-        int price = Integer.parseInt(priceStr);
-        if (adding) {
-            totalAmount += price;
-            
-        } else {
-            totalAmount -= price;
-   
+    //"ProductName - Price - Qty"
+        String[] parts = item.split(" - ");
+        if (parts.length < 3) {
+            return; // safety check
         }
+
+        String priceStr = parts[1];  //price part
+        String qtyStr = parts[2];    //quantity part
+
+        int price = Integer.parseInt(priceStr);
+        int qty = Integer.parseInt(qtyStr);
+
+        int totalChange = price * qty;
+
+        if (adding) {
+            totalAmount += totalChange;
+        } else {
+            totalAmount -= totalChange;
+        }
+
         ds.setTotalAmount(totalAmount);
-        
-        
         totalField.setText("₱ " + totalAmount);
     }
-    
-    
 }

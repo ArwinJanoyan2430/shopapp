@@ -127,7 +127,7 @@ public class ProductsPage extends JFrame implements ActionListener {
         txtSearch.addActionListener(e -> {
             String text = txtSearch.getText();
 
-            sorter.setRowFilter(RowFilter.regexFilter("(?i)" + text,1));
+            sorter.setRowFilter(RowFilter.regexFilter("(?i)" + text,0, 1));
         });
         
         lblNote = new JLabel("Note: The (X) button is disabled. please use the menu to exit.");
@@ -232,7 +232,7 @@ public class ProductsPage extends JFrame implements ActionListener {
                 int selectedRow = table.getSelectedRow();
                 model.removeRow(selectedRow);
             } else {
-                JOptionPane.showMessageDialog(null, "delete cancelled.");
+                JOptionPane.showMessageDialog(null, "delete canceled.");
             }
             
         }
@@ -246,7 +246,7 @@ public class ProductsPage extends JFrame implements ActionListener {
                 sorter.setRowFilter(null);
                 model.setRowCount(0);
             } else {
-                JOptionPane.showMessageDialog(null, "clear products cancelled.");
+                JOptionPane.showMessageDialog(null, "clear products canceled.");
             }
             
         }
