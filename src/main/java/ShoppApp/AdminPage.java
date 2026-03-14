@@ -97,19 +97,19 @@ public class AdminPage extends JFrame implements ActionListener {
     }
 
     // product page button ni sya HAHAHAHHAHAHAHAHAHAHAHA
-    public void viewUltraProMaxFullyPaidViewProducts() {
+    public void productsPage() {
         ProductsPage p = new ProductsPage();
         p.setVisible(true);
     }
 
     // sa users page button ni sya HAHAHAHHAHAHAHAHAHAHAHA
-    public void minahalSinaktanNagCoding() {
+    public void userPage() {
         UserPage u = new UserPage();
         u.setVisible(true);
     }
 
     // reports page button ni sya HAHAHAHHAHAHAHAHAHAHAHA
-    public void kalapastangan() {
+    public void reportsPage() {
         ReportsPage r = new ReportsPage();
         r.setVisible(true);
     }
@@ -117,17 +117,17 @@ public class AdminPage extends JFrame implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == btnViewProducts) {
-            viewUltraProMaxFullyPaidViewProducts();
+            productsPage();
             this.dispose();
         }
 
         if (e.getSource() == btnViewUsers) {
-            minahalSinaktanNagCoding();
+            userPage();
             this.dispose();
         }
 
         if (e.getSource() == btnViewReports) {
-            kalapastangan();
+            reportsPage();
             this.dispose();
         }
     }

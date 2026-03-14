@@ -127,7 +127,7 @@ public class ProductsPage extends JFrame implements ActionListener {
         txtSearch.addActionListener(e -> {
             String text = txtSearch.getText();
 
-            sorter.setRowFilter(RowFilter.regexFilter("(?i)" + text));
+            sorter.setRowFilter(RowFilter.regexFilter("(?i)" + text,1));
         });
         
         lblNote = new JLabel("Note: The (X) button is disabled. please use the menu to exit.");
@@ -224,14 +224,31 @@ public class ProductsPage extends JFrame implements ActionListener {
         }
 
         if (e.getSource() == btnDelete) {
-            int selectedRow = table.getSelectedRow();
-            model.removeRow(selectedRow);
+            
+            int choice = JOptionPane.showConfirmDialog(null, "Are you sure you want to delete this product", "Confirm ", JOptionPane.YES_NO_OPTION);
+            
+            if (choice == JOptionPane.YES_NO_OPTION){
+                JOptionPane.showMessageDialog(null, "product deleted.");
+                int selectedRow = table.getSelectedRow();
+                model.removeRow(selectedRow);
+            } else {
+                JOptionPane.showMessageDialog(null, "delete cancelled.");
+            }
+            
         }
 
         if (e.getSource() == btnClear) {
-            txtSearch.setText("");
-            sorter.setRowFilter(null);
-            model.setRowCount(0);
+            int choice = JOptionPane.showConfirmDialog(null, "Are you sure you want to clear all products?", "", JOptionPane.YES_NO_OPTION);
+            
+            if (choice == JOptionPane.YES_NO_OPTION){
+                JOptionPane.showMessageDialog(null, "all products cleared.");
+                txtSearch.setText("");
+                sorter.setRowFilter(null);
+                model.setRowCount(0);
+            } else {
+                JOptionPane.showMessageDialog(null, "clear products cancelled.");
+            }
+            
         }
     }
 }

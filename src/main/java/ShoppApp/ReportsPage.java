@@ -42,16 +42,26 @@ public class ReportsPage extends JFrame {
             .getImage()
             .getScaledInstance(50, 50, Image.SCALE_SMOOTH);
         setIconImage(imgIcon);
+        
+        ImageIcon logo = new ImageIcon(
+            getClass().getResource("/ShoppApp/assets/Logo.png")
+        );
+        Image img = logo
+            .getImage()
+            .getScaledInstance(100, 90, Image.SCALE_SMOOTH);
+        JLabel lblLogo = new JLabel(new ImageIcon(img));
+        lblLogo.setBounds(670, 50, 90, 70);
+        con.add(lblLogo);
 
         //  TITLE
         lblTitle = new JLabel("Shop App Admin");
-        lblTitle.setFont(new Font("Arial", Font.BOLD, 20));
+        lblTitle.setFont(new Font("Arial", Font.BOLD, 40));
         con.add(lblTitle);
         lblTitle.setBounds(760, 60, 400, 50);
 
         // SALES REPORT LABEL
         lblSales = new JLabel("Sales Report");
-        lblSales.setFont(new Font("Arial", Font.PLAIN, 16));
+        lblSales.setFont(new Font("Arial", Font.BOLD, 30));
         con.add(lblSales);
         lblSales.setBounds(190, 150, 200, 30);
 

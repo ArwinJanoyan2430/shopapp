@@ -21,7 +21,6 @@ public class DataStore {
         0
     );
 
-    public static void setSoldList() {}
 
     //total amount
     public static double totalAmount = 0;
@@ -41,7 +40,7 @@ public class DataStore {
         productModel.addRow(new Object[] { "3", "Monitor", "8000", "5" });
     }
 
-    //default admin account
+    //default customer account
     static {
         userModel.addRow(new Object[] { "1", "customer", "customer" });
     }

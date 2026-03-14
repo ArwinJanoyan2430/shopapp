@@ -30,7 +30,7 @@ public class CustomerShoppingPage extends JFrame implements ActionListener {
     JTextField searchField = new JTextField(10);
     JTextField totalField = new JTextField(10);
     JLabel lblTitle, lblSearch, lbltotal, lblNote;
-    JButton btnAdd, btnCheckout, btnRemove, btnClear, btnRefresh, btnExit, btnLogout;
+    JButton btnAdd, btnCheckout, btnRemove, btnClear, btnExit, btnLogout;
     DefaultTableModel model;
     
     int totalAmount = 0;
@@ -129,10 +129,6 @@ public class CustomerShoppingPage extends JFrame implements ActionListener {
         totalField.setEditable(false);
         add(totalField);
 
-        btnRefresh = new JButton("Refresh");
-        btnRefresh.setBounds(580, 130, 180, 35);
-        add(btnRefresh);
-
         btnCheckout = new JButton("Checkout");
         btnCheckout.setBackground(new Color(106, 45, 214));
         btnCheckout.setForeground(Color.WHITE);
@@ -160,12 +156,10 @@ public class CustomerShoppingPage extends JFrame implements ActionListener {
         lblNote.setBounds(10, 840, 400, 12);
         add(lblNote);
         
-        btnRefresh.addActionListener(this);
         btnClear.addActionListener(this);
         btnCheckout.addActionListener(this);
         btnRemove.addActionListener(this);
         btnAdd.addActionListener(this);
-        btnRefresh.addActionListener(this);
         btnExit.addActionListener(this);
         btnLogout.addActionListener(this);
     }
@@ -224,13 +218,7 @@ public class CustomerShoppingPage extends JFrame implements ActionListener {
                 );
                 if (phoneNum == null || phoneNum.trim().isEmpty()) {
                     return;
-                }
-                JOptionPane.showMessageDialog(
-                    this,
-                    "Location: " + address + "\nPhone No.:" + phoneNum,
-                    "Confirm data",
-                    JOptionPane.INFORMATION_MESSAGE
-                );
+                }    
                 
                 //to show item checked out in the reports page
                 model = DataStore.transactionModel;
@@ -248,18 +236,12 @@ public class CustomerShoppingPage extends JFrame implements ActionListener {
                    model.addRow(new Object[] {transactionId, product, qty, price});
                    JOptionPane.showMessageDialog(this, "Checkout successful!");
                    
-                   totalAmount = 0;
-                   cartModel.clear();
-                   totalField.setText("₱ 0");
+                   
                 }
-            }
-            
-            
-            
-        }
-
-        if (e.getSource() == btnRefresh) {
-            loadProducts();
+                totalAmount = 0;
+                cartModel.clear();
+                totalField.setText("₱ 0");
+            }        
         }
 
         if (e.getSource() == btnExit) {
@@ -287,9 +269,7 @@ public class CustomerShoppingPage extends JFrame implements ActionListener {
     }
     
     private void updateTotal(String item, boolean adding) {
-       
-        
-        
+
         // Simple logic to extract numbers from the string
         String priceStr = item.replaceAll("[^0-9]", "");
         int price = Integer.parseInt(priceStr);
