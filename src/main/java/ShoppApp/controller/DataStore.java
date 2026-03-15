@@ -12,10 +12,11 @@ public class DataStore {
 
     // Shared Transaction Table
     public static DefaultTableModel transactionModel = new DefaultTableModel(
-        new String[] { "Transaction ID", "Product", "Qty", "Total" },
+        new String[] { "Transaction ID", "Product", "Qty", "price", "Total" },
         0
     );
-
+    
+    //USER TABLEEEE
     public static DefaultTableModel userModel = new DefaultTableModel(
         new String[] { "user_ID", "username", "password" },
         0

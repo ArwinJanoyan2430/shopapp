@@ -266,10 +266,10 @@ public class CustomerShoppingPage extends JFrame implements ActionListener {
                     String product = parts[0].trim(); //to get the product and trim to remove the spaces
                     int price = Integer.parseInt(parts[1].trim()); //get the price
                     int qty = Integer.parseInt(parts[2].trim()); // quantity
-
+                    int total = price * qty;
                     int transactionId = model.getRowCount() + 1; // add row to the table
 
-                    model.addRow(new Object[] { transactionId, product, qty, price }); //send to the table
+                    model.addRow(new Object[] { transactionId, product, qty, price ,total}); //send to the table
                 }
                 JOptionPane.showMessageDialog(this, "Checkout successful!");
                 

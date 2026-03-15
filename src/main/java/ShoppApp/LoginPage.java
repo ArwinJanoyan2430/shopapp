@@ -168,7 +168,7 @@ public class LoginPage extends JFrame implements ActionListener {
                 this.dispose();
             } else {
                 boolean found = false;
-                // Loop through all users in DataStore
+                // Loop through all users in DataStore USER TABLE
                 for (int i = 0; i < DataStore.userModel.getRowCount(); i++) {
                     String u = DataStore.userModel.getValueAt(i, 1).toString(); // username
                     String p = DataStore.userModel.getValueAt(i, 2).toString(); // password

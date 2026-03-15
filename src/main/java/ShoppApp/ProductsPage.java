@@ -177,11 +177,14 @@ public class ProductsPage extends JFrame implements ActionListener {
             }
 
             int id = model.getRowCount() + 1;
-
+            
+            
+            // mag add ug row sa table
             model.addRow(new Object[] { id, productName, price, stock });
         }
 
         if (e.getSource() == btnEdit) {
+            //select a product then edit
             int selectedRow = table.getSelectedRow();
             int modelRow = table.convertRowIndexToModel(selectedRow);
             if (selectedRow == -1) {
@@ -217,14 +220,15 @@ public class ProductsPage extends JFrame implements ActionListener {
             if (stock == null || stock.trim().isEmpty()) {
                 return;
             }
-
+            
+            //locate ang index then replace the desired update
             model.setValueAt(productName, modelRow, 1);
             model.setValueAt(price, modelRow, 2);
             model.setValueAt(stock, modelRow, 3);
         }
 
         if (e.getSource() == btnDelete) {
-            
+            //confirmation
             int choice = JOptionPane.showConfirmDialog(null, "Are you sure you want to delete this product", "Confirm ", JOptionPane.YES_NO_OPTION);
             
             if (choice == JOptionPane.YES_NO_OPTION){
